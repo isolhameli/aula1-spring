@@ -2,45 +2,22 @@ package com.mercadolibre.projetospring.services;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
-import static java.util.Map.entry;
-
 @Service
 public class RomanService {
 
-    private Map<String, Integer> romanMap = Map.ofEntries(
+    private int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    private String[] romanLiterals = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
-            entry("I", 1),
-            entry("V", 5),
-            entry("X", 10),
-            entry("L", 50),
-            entry("C", 100),
-            entry("D", 500),
-            entry("M", 1000)
-    );
 
-    public Integer romanToNumber(String roman){
-        String[] numbers = roman.split("");
+    public String romanToNumber(int number) {
+        StringBuilder roman = new StringBuilder();
 
-        Integer sum = 0;
-        Integer previousNumber = 0;
-
-        for (String item : numbers) {
-            Integer aux = romanMap.get(item.toUpperCase());
-
-            if (aux == null) continue;
-
-            if (aux > previousNumber) {
-                sum += aux;
-                sum -= previousNumber * 2;
-            } else {
-                sum += aux;
+        for (int i = 0; i < values.length; i++) {
+            while (number >= values[i]) {
+                number -= values[i];
+                roman.append(romanLiterals[i]);
             }
-
-            previousNumber = aux;
         }
-
-        return sum;
+        return roman.toString();
     }
 }
